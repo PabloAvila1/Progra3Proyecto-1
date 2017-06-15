@@ -179,7 +179,7 @@ namespace ReproductorMP3
                 if (ms != null && ms.Length > 4096)
                 {
                     currentImage = System.Drawing.Image.FromStream(ms);
-                    frm.caratula.Image = currentImage.GetThumbnailImage(200, 200, null, System.IntPtr.Zero);
+                    frm.pictureBox1.Image = currentImage.GetThumbnailImage(200, 200, null, System.IntPtr.Zero);
                 }
                 ms.Close();
             }
@@ -375,6 +375,74 @@ namespace ReproductorMP3
             dataGridView2.Refresh();
         }
 
+        private void ListaReproducción_Load_1(object sender, EventArgs e)
+        {
+            frm.Show();
+            button4.Visible = false;
+            button8.Visible = false;
+            dataGridView1.Visible = true;
+            dataGridView2.Visible = false;
+        }
+
+        private void dataGridView2_CellDoubleClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            frm.Hide();
+            frm.label1.Text = " ";
+
+            frm.label1.Text = dataGridView2.CurrentRow.Cells["Nombre"].Value.ToString();
+            frm.WMedia.URL = dataGridView2.CurrentRow.Cells["Url"].Value.ToString();
+
+            WMPLib.IWMPPlaylist playlist = frm.WMedia.playlistCollection.newPlaylist("myplaylist");
+            WMPLib.IWMPMedia media;
+
+            media = frm.WMedia.newMedia(dataGridView2.CurrentRow.Cells["Url"].Value.ToString());
+            playlist.appendItem(media);
+
+            frm.WMedia.currentPlaylist = playlist;
+            listadatosmp3.RemoveRange(0, listadatosmp3.Count);
+            string dat = dataGridView2.CurrentRow.Cells["Url"].Value.ToString();
+            cargarima(dat);
+            tagcan(dat);
+            frm.dataGridView1.DataSource = null;
+            frm.dataGridView1.Refresh();
+            frm.dataGridView1.DataSource = listadatosmp3;
+            frm.dataGridView1.Refresh();
+            frm.Show();
+        }
+
+        private void dataGridView2_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            string nom = dataGridView2.CurrentRow.Cells["Nombre"].Value.ToString();
+            label1.Text = nom;
+        }
+
+        private void dataGridView1_CellDoubleClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            frm.Hide();
+            frm.label1.Text = " ";
+
+            frm.label1.Text = dataGridView1.CurrentRow.Cells["nombre"].Value.ToString();
+            frm.WMedia.URL = dataGridView1.CurrentRow.Cells["url"].Value.ToString();
+
+            WMPLib.IWMPPlaylist playlist = frm.WMedia.playlistCollection.newPlaylist("myplaylist");
+            WMPLib.IWMPMedia media;
+
+            media = frm.WMedia.newMedia(dataGridView1.CurrentRow.Cells["url"].Value.ToString());
+            playlist.appendItem(media);
+
+            frm.WMedia.currentPlaylist = playlist;
+            listadatosmp3.RemoveRange(0, listadatosmp3.Count);
+            string dat = dataGridView1.CurrentRow.Cells["url"].Value.ToString();
+            cargarima(dat);
+            tagcan(dat);
+            frm.dataGridView1.DataSource = null;
+            frm.dataGridView1.Refresh();
+            frm.dataGridView1.DataSource = listadatosmp3;
+            frm.dataGridView1.Refresh();
+            frm.Show();
+
+        }
+
         private void button6_Click(object sender, EventArgs e)
         {
             button8.Visible = true;
@@ -401,7 +469,7 @@ namespace ReproductorMP3
         public void leerbiblio()
         {
             XDocument documento = XDocument.Load(@"biblio.xml");
-            var listar = from lis in documento.Descendants("BlibiotecaCanciones") select lis;
+            var listar = from lis in documento.Descendants("Blibioteca") select lis;
             foreach (XElement u in listar.Elements("Cancion"))
             {
                 BibliotecaCanciones tmp = new BibliotecaCanciones();

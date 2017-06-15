@@ -158,7 +158,7 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(31, 54);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(283, 264);
+            this.listBox1.Size = new System.Drawing.Size(203, 186);
             this.listBox1.TabIndex = 9;
             // 
             // button7
@@ -252,7 +252,7 @@
             // 
             this.pictureBox1.Location = new System.Drawing.Point(31, 54);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(283, 264);
+            this.pictureBox1.Size = new System.Drawing.Size(203, 195);
             this.pictureBox1.TabIndex = 17;
             this.pictureBox1.TabStop = false;
             // 
@@ -260,6 +260,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(761, 505);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button12);

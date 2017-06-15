@@ -11,7 +11,7 @@ namespace ReproductorMP3
         string nombre;
         string url;
         string calidad;
-        public string Nombre
+public string Nombre
         {
             get
             {
