@@ -62,7 +62,7 @@ namespace ReproductorMP3
                 {
                     currentImage = System.Drawing.Image.FromStream(ms);
                     // Load thumbnail into PictureBox
-                    caratula.Image = currentImage.GetThumbnailImage(200, 200, null, System.IntPtr.Zero);
+                    pictureBox1.Image = currentImage.GetThumbnailImage(200, 200, null, System.IntPtr.Zero);
                 }
                 ms.Close();
             }
@@ -86,7 +86,7 @@ namespace ReproductorMP3
         {
             WMedia.uiMode = "invisible";
             listBox1.Visible = false;
-            caratula.Visible = true;
+            pictureBox1.Visible = true;
         }
         private void AbrirToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -266,5 +266,98 @@ namespace ReproductorMP3
 
             }
         }
+
+        private void macTrackBar1_ValueChanged(object sender, decimal value)
+        {
+            WMedia.settings.volume = macTrackBar1.Value;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            macTrackBar1.Value = WMedia.settings.volume;
+            actualizar();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            listareproduci.RemoveRange(0, listareproduci.Count);
+            actualizar();
+            var myPlayList = WMedia.playlistCollection.newPlaylist("MyPlayList");
+
+            for (int i = 0; i < listareproduci.Count; i++)
+            {
+                var mediaItem = WMedia.newMedia(listareproduci[i].Url);
+                myPlayList.appendItem(mediaItem);
+            }
+            WMedia.currentPlaylist = myPlayList;
+        }
+
+        public void eliminarlisre()
+        {
+            XmlDocument documento = new XmlDocument();
+            string ruta = @"miXML.xml";
+            documento = new XmlDocument();
+            documento.Load(ruta);
+            XmlElement bibliot = documento.DocumentElement;
+            XmlNodeList listacancion = documento.SelectNodes("Lista_Favoritos/Cancion");
+
+            foreach (XmlNode item in listacancion)
+            {
+                for (int i = 0; i < listareproduci.Count; i++)
+                {
+                    if (item.FirstChild.InnerText == listareproduci[i].Nombre)
+                    {
+                        XmlNode nodoOld = item;
+                        bibliot.RemoveChild(nodoOld);
+                    }
+                }
+
+                //Salvamos el documento.
+                documento.Save(ruta);
+            }
+
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            eliminarlisre();
+            Application.ExitThread();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            listBox1.Visible = true;
+            caratula.Visible = false;
+            this.listBox1.Items.Clear();
+            OpenFileDialog open = new OpenFileDialog();
+            open.Filter = "Archivo txt (*.txt)|*.txt|All(*,*)|*,*";
+            try
+            {
+                open.ShowDialog();
+                StreamReader import = new StreamReader(Convert.ToString(open.FileName));
+                while (import.Peek() >= 0)
+                {
+                    listBox1.Items.Add(Convert.ToString(import.ReadLine()));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(Convert.ToString(ex.Message));
+                return;
+            }
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            listBox1.Visible = false;
+            caratula.Visible = true;
+        }
+
+
     }
 }

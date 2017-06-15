@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReproductorMP3
 {
-    class BibliotecaCanciones
+    class BibliotecaCanciones:DatosMP3
     {
         string nombre;
         string url;
@@ -51,4 +51,4 @@ namespace ReproductorMP3
         }
     }
 }
-}
+
